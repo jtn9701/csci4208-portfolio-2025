@@ -1,6 +1,8 @@
 # Repository Info and Layout
 - GitHub Page:
     - [Github page](https://jtn9701.github.io/csci4208-portfolio-2025/)
+- Project Board:
+    - [Project Board](https://github.com/users/jtn9701/projects/1/views/1)
 - Labs:
     - [Lab1](./Labs/Lab1/html-adventure-story-master/html-adventure-story-master/html-files/)
     - [Lab2](./Labs/Lab2/css-crash-course-master/css-crash-course-master/)
@@ -19,7 +21,7 @@
 │  ├─ lab3/</br>
 │  └─ lab4/</br>
 ├─ projects/</br>
-│  └─ project1-interactive-story/</br>       
+│  └─ project1-interactive-story/</br>
 ├─ capstone/</br>
 ├─ README.md</br>
 └─ index.html                 # Landing Page
