@@ -1,12 +1,29 @@
-# This holds Labs and links to Project/Capstone repositories
+# Repository Info and Layout
+- GitHub Page:
+    - [Github page](https://jtn9701.github.io/csci4208-portfolio-2025/)
 - Labs:
-    - [Lab 1](./Labs/Lab1/html-adventure-story-master/html-adventure-story-master/html-files/)
-    - [Lab 2](./Labs/Lab2/css-crash-course-master/css-crash-course-master/)
-    - [Lab 3](./Labs/Lab3/portfolio-bootstrap-master/)
+    - [Lab1](./Labs/Lab1/html-adventure-story-master/html-adventure-story-master/html-files/)
+    - [Lab2](./Labs/Lab2/css-crash-course-master/css-crash-course-master/)
+    - [Lab3](./Labs/Lab3/portfolio-bootstrap-master/)
     - [Lab 4](./Labs/Lab4/hilo-js-dom-master/)
-
 - Projects:
     - [Interactive-story](./projects/project1-interactive-story/README.md)
+
+## Repo Layout
+/
+├─ \_docs/
+├─ .github/workflows
+├─ labs/
+│  ├─ lab1/
+│  ├─ lab2/
+│  ├─ lab3/
+│  └─ lab4/
+├─ \_docs/
+├─ projects/
+│  └─ project1-interactive-story           
+├─ capstone/
+├─ README.md
+└─ index.html                 # Landing Page
 
 ## ✅ Submission Status (automatically updated)
 <!-- STATUS:START -->
