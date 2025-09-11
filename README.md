@@ -1,12 +1,12 @@
 # This holds Labs and links to Project/Capstone repositories
 - Labs:
-    - Lab 1: ./labs/Lab1/html-adventure-story-master/html-adventure-story-master/html-files/index.html
-    - Lab 2: ./labs/Lab2/css-crash-course-master/css-crash-course-master/index.html
-    - Lab 3: ./labs/Lab3/portfolio-bootstrap-master/index.html
-    - Lab 4: ./labs/Lab4/hilo-js-dom-master/index.html
+    - [Lab 1]: ./labs/Lab1/html-adventure-story-master/html-adventure-story-master/html-files/index.html
+    - [Lab 2]: ./labs/Lab2/css-crash-course-master/css-crash-course-master/index.html
+    - [Lab 3]: ./labs/Lab3/portfolio-bootstrap-master/index.html
+    - [Lab 4]: ./labs/Lab4/hilo-js-dom-master/index.html
 
 - Projects:
-    - Interactive-story: https://jtn9701.github.io/Web-Apps-HTML-Game/
+    - [Interactive-story]: (./projects/project1-interactive-story/README.md)
 
 ## ✅ Submission Status (automatically updated)
 <!-- STATUS:START -->
