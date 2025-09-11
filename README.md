@@ -1,12 +1,12 @@
 # This holds Labs and links to Project/Capstone repositories
 - Labs:
-  - [Lab 1](./labs/Lab1/html-adventure-story-master/html-adventure-story-master/html-files/)
-  - [Lab 2](./labs/Lab2/css-crash-course-master/css-crash-course-master/)
-  - [Lab 3](./labs/Lab3/portfolio-bootstrap-master/)
-  - [Lab 4](./labs/Lab4/hilo-js-dom-master/)
+    - [Lab 1](./labs/Lab1/html-adventure-story-master/html-adventure-story-master/html-files/)
+    - [Lab 2](./labs/Lab2/css-crash-course-master/css-crash-course-master/)
+    - [Lab 3](./labs/Lab3/portfolio-bootstrap-master/)
+    - [Lab 4](./labs/Lab4/hilo-js-dom-master/)
 
 - Projects:
-  - [Interactive-story](./projects/project1-interactive-story/README.md)
+    - [Interactive-story](./projects/project1-interactive-story/README.md)
 
 ## ✅ Submission Status (automatically updated)
 <!-- STATUS:START -->
