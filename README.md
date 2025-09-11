@@ -12,6 +12,7 @@
     - [Interactive-story](./projects/project1-interactive-story/README.md)
 - Capstone:
     - [Capstone](./capstone)
+    - [Capstone Project Board](https://github.com/users/jtn9701/projects/2/views/1)
 
 ## Repo Layout
 /</br>
