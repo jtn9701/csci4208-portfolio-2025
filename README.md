@@ -10,19 +10,19 @@
     - [Interactive-story](./projects/project1-interactive-story/README.md)
 
 ## Repo Layout
-/
-├─ \_docs/
-├─ .github/workflows
-├─ labs/
-│  ├─ lab1/
-│  ├─ lab2/
-│  ├─ lab3/
-│  └─ lab4/
-├─ \_docs/
-├─ projects/
-│  └─ project1-interactive-story           
-├─ capstone/
-├─ README.md
+/</br>
+├─ \_docs/</br>
+├─ .github/workflows</br>
+├─ labs/</br>
+│  ├─ lab1/</br>
+│  ├─ lab2/</br>
+│  ├─ lab3/</br>
+│  └─ lab4/</br>
+├─ \_docs/</br>
+├─ projects/</br>
+│  └─ project1-interactive-story    </br>       
+├─ capstone/</br>
+├─ README.md</br>
 └─ index.html                 # Landing Page
 
 ## ✅ Submission Status (automatically updated)
