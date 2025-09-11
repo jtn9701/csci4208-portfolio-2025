@@ -10,6 +10,8 @@
     - [Lab 4](./Labs/Lab4/hilo-js-dom-master/)
 - Projects:
     - [Interactive-story](./projects/project1-interactive-story/README.md)
+- Capstone:
+    - [Capstone](./capstone)
 
 ## Repo Layout
 /</br>
