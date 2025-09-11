@@ -1,0 +1,188 @@
+name: Update README Submission Table
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "15 5 * * *"   # daily 05:15 UTC
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-readme-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-table:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate 3-column table (Item | Key | Status)
+        id: gen
+        uses: actions/github-script@v7
+        env:
+          PROJECT_URL: ${{ vars.PROJECT_URL }}   # optional: https://github.com/users/<user>/projects/1 or orgs/<org>/projects/<n>
+        with:
+          script: |
+            const fs = require('fs');
+            const owner = context.repo.owner;
+            const repo  = context.repo.repo;
+
+            // --- locate or scaffold README (accept common casings)
+            const candidates = ['README.md','README.MD','readme.md'];
+            let readmePath = candidates.find(p => fs.existsSync(p));
+            if (!readmePath) {
+              readmePath = 'README.md';
+              const scaffold = [
+                '# 🎓 Course Portfolio — <Your Name>',
+                '',
+                '## ✅ Submission Status (automatically updated)',
+                '<!-- STATUS:START -->',
+                '| Item | Key | Status |',
+                '|---|---|---|',
+                '<!-- STATUS:END -->',
+                ''
+              ].join('\n');
+              fs.writeFileSync(readmePath, scaffold);
+              core.info('Created README.md scaffold with STATUS markers.');
+            }
+
+            // ---------- optional: map Project (v2) Status for issues in this repo ----------
+            async function getProjectStatusMap(projectUrl) {
+              if (!projectUrl) return {};
+              const m = projectUrl.match(/github\.com\/(orgs|users)\/([^/]+)\/projects\/(\d+)/);
+              if (!m) { core.info('PROJECT_URL not recognized, skipping project status.'); return {}; }
+              const scope = m[1], login = m[2], number = parseInt(m[3],10);
+
+              const projQ = scope === 'orgs'
+                ? `query($login:String!,$number:Int!){ organization(login:$login){ projectV2(number:$number){ id } } }`
+                : `query($login:String!,$number:Int!){ user(login:$login){ projectV2(number:$number){ id } } }`;
+              const projR = await github.graphql(projQ, { login, number });
+              const project = (scope === 'orgs' ? projR.organization : projR.user).projectV2;
+              if (!project) { core.info('Project not found or not accessible.'); return {}; }
+              const projectId = project.id;
+
+              const statusByIssueId = {};
+              let after = null;
+              const query = `
+                query($id:ID!,$after:String){
+                  node(id:$id){
+                    ... on ProjectV2{
+                      items(first:100, after:$after){
+                        nodes{
+                          content{ __typename ... on Issue { id repository{ nameWithOwner } } }
+                          fieldValues(first:20){
+                            nodes{
+                              __typename
+                              ... on ProjectV2ItemFieldSingleSelectValue{
+                                field{ __typename ... on ProjectV2SingleSelectField{ name } }
+                                name
+                              }
+                            }
+                          }
+                        }
+                        pageInfo{ hasNextPage endCursor }
+                      }
+                    }
+                  }
+                }`;
+              do {
+                const r = await github.graphql(query, { id: projectId, after });
+                const items = r.node.items.nodes || [];
+                for (const it of items) {
+                  if (!it.content || it.content.__typename !== 'Issue') continue;
+                  const rno = it.content.repository?.nameWithOwner || '';
+                  if (rno.toLowerCase() !== `${owner}/${repo}`.toLowerCase()) continue;
+                  const fv = it.fieldValues.nodes || [];
+                  const statusFV = fv.find(n => n.__typename === 'ProjectV2ItemFieldSingleSelectValue'
+                    && n.field?.__typename === 'ProjectV2SingleSelectField'
+                    && n.field?.name === 'Status');
+                  if (statusFV?.name) statusByIssueId[it.content.id] = statusFV.name; // e.g., Todo, In progress, Done
+                }
+                after = r.node.items.pageInfo.hasNextPage ? r.node.items.pageInfo.endCursor : null;
+              } while (after);
+
+              core.info(`Project status entries mapped: ${Object.keys(statusByIssueId).length}`);
+              return statusByIssueId;
+            }
+            const projStatus = await getProjectStatusMap(process.env.PROJECT_URL);
+
+            // ---------- fetch ALL issues (open+closed) ----------
+            const allIssues = await github.paginate(
+              github.rest.issues.listForRepo,
+              { owner, repo, state: 'all', per_page: 100 }
+            );
+
+            // Helpers
+            const statusLabelsOrder = [
+              'changes-requested','blocked',
+              'peer-review-requested','reviewed','ready-for-approval',
+              'completed','approved','deployed'
+            ];
+            const findKey = (labels) => {
+              const names = labels.map(l => (l.name || l).toString());
+              return names.find(n => /^(lab|project|capstone)-\d+$/i.test(n)) || '';
+            };
+            const isRoadmap = (labels) => {
+              const names = labels.map(l => (l.name || l).toString());
+              return names.includes('task') || names.includes('assignment');
+            };
+            const labelStatus = (issue) => {
+              const names = issue.labels.map(l => (l.name || l).toString());
+              for (const s of statusLabelsOrder) if (names.includes(s)) return s;
+              return issue.state; // 'open' or 'closed'
+            };
+
+            // Roadmap items = have key + task/assignment
+            const roadmap = allIssues.filter(it => findKey(it.labels) && isRoadmap(it.labels));
+            core.info(`Roadmap issues found: ${roadmap.length}`);
+
+            // Build rows (prefer Project Status)
+            const rows = roadmap.map(it => {
+              const key = findKey(it.labels);
+              const title = `${it.title} [#${it.number}](${it.html_url})`;
+              const status = projStatus[it.node_id] || labelStatus(it);
+              return { key, title, status };
+            });
+
+            // Sort by type prefix + numeric part, else alpha
+            const norm = k => {
+              const m = k.match(/^(lab|project|capstone)-(\d+)/i);
+              return m ? `${m[1]}-${String(+m[2]).padStart(3,'0')}` : k;
+            };
+            rows.sort((a,b) => norm(a.key).localeCompare(norm(b.key)));
+
+            // Build 3-column table
+            const header = '| Item | Key | Status |\n|---|---|---|';
+            const body = rows.map(r => `| ${r.title} | \`${r.key}\` | ${r.status || ''} |`).join('\n');
+            const table = `${header}\n${body}`;
+
+            // Replace between markers
+            const start = '<!-- STATUS:START -->';
+            const end   = '<!-- STATUS:END -->';
+            let readme = fs.readFileSync(readmePath, 'utf8');
+
+            if (!readme.includes(start) || !readme.includes(end)) {
+              readme = `${readme.trim()}\n\n## ✅ Submission Status (automatically updated)\n${start}\n${header}\n${end}\n`;
+            }
+
+            const re = new RegExp(`${start}[\\s\\S]*?${end}`);
+            const updated = readme.replace(re, `${start}\n${table}\n${end}`);
+
+            if (updated !== readme) {
+              fs.writeFileSync(readmePath, updated);
+              core.setOutput('changed', 'true');
+              core.setOutput('path', readmePath);
+              core.info(`Updated 3-column table with ${rows.length} row(s).`);
+            } else {
+              core.setOutput('changed', 'false');
+              core.info('No README changes detected (table identical).');
+            }
+
+      - name: Commit README if changed
+        if: steps.gen.outputs.changed == 'true'
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: ${{ steps.gen.outputs.path || 'README.md' }}
+          message: "docs: auto-update submission table (Item | Key | Status)"

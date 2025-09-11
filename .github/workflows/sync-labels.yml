@@ -1,0 +1,49 @@
+name: Sync labels
+
+on:
+  workflow_dispatch: {}
+  push:
+    paths: [".github/labels.yml"]
+  # optional: keep forks in sync weekly (UTC)
+  # schedule:
+  #   - cron: "0 12 * * 1"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: labels-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Fetch canonical labels from the instructor repo (allows per-fork override via LABELS_SRC)
+      - name: Fetch instructor labels
+        env:
+          LABELS_SRC: ${{ vars.LABELS_SRC }}
+          DEFAULT_LABELS: https://raw.githubusercontent.com/scalemailted/FullStackApps/refs/heads/main/.github/labels.yml
+        run: |
+          set -e
+          URL="${LABELS_SRC:-$DEFAULT_LABELS}"
+          echo "Fetching labels from: $URL"
+          mkdir -p .github
+          if curl --fail --silent --show-error --location "$URL" -o .github/labels.yml; then
+            echo "Fetched labels.yml from instructor repo."
+          elif [ -f .github/labels.yml ]; then
+            echo "Using local .github/labels.yml (remote fetch failed)."
+          else
+            echo "ERROR: No labels.yml available (remote fetch failed and no local file)." >&2
+            exit 1
+          fi
+
+      - name: Apply labels
+        uses: crazy-max/ghaction-github-labeler@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          yaml-file: .github/labels.yml
+          skip-delete: true
