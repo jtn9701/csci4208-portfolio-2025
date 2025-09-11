@@ -1,4 +1,4 @@
-# Repository Info and Layout
+# Jason Nguyen's CSCI4208 Portfolio
 - GitHub Page:
     - [Github page](https://jtn9701.github.io/csci4208-portfolio-2025/)
 - Project Board:
