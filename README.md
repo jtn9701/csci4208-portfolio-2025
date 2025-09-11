@@ -18,9 +18,8 @@
 │  ├─ lab2/</br>
 │  ├─ lab3/</br>
 │  └─ lab4/</br>
-├─ \_docs/</br>
 ├─ projects/</br>
-│  └─ project1-interactive-story</br>       
+│  └─ project1-interactive-story/</br>       
 ├─ capstone/</br>
 ├─ README.md</br>
 └─ index.html                 # Landing Page
