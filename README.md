@@ -23,6 +23,7 @@
 ├─ projects/</br>
 │  └─ project1-interactive-story/</br>
 ├─ capstone/</br>
+├─ .gitignore</br>
 ├─ README.md</br>
 └─ index.html                 # Landing Page
 
