@@ -1,4 +1,5 @@
 # Title: Cat Rescue
+![alt text](./Favicon.png)
 This game was created to teach us how to create HTML pages with CSS styling. </br>
 The game is a multi-HTML paged game where each scene is its own HTML page.</br>
 
