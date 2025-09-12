@@ -15,6 +15,10 @@ Your job is to go defeat the villain and save your friend.
 - Follow the story and find cats to help you along your journey.</br>
 - Click on any wandering cats in the overworld to add them to your party.</br>
 
+## Features
+- Interactive story
+- Interactive, clickable components
+
 ## Techniques used
 - HTML (multi-page), CSS (external stylesheets)
 - For the majority of our standard buttons, we decided to use CSS styled anchor tags</br>
