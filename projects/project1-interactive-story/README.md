@@ -22,7 +22,7 @@ Your job is to go defeat the villain and save your friend.
 ## Techniques used
 - HTML (multi-page), CSS (external stylesheets)
 - For the majority of our standard buttons, we decided to use CSS styled anchor tags</br>
-with CSS styling to match the aesthetic of the game.</br></br>
+with CSS styling to match the aesthetic of the game.</br>
 - For some of the complex scripts, we abstracted them into their own .js files</br>
 to make the HTML files feel cleaner
 
