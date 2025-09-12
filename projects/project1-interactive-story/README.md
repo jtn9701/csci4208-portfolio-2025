@@ -37,4 +37,5 @@ Jason and Johnny</br>
 ### Art
 AI</br>
 ### Music
-Octopath Traveller
+- Octopath Traveler
+- We Lost - Lorien Testard
