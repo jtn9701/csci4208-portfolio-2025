@@ -17,6 +17,7 @@ class PlayScene extends Phaser.Scene {
         this.create_map();  // create level
         this.create_player();
         this.create_enemies();
+        this.create_collisions();
     }
     
     //Update game data
@@ -57,5 +58,15 @@ class PlayScene extends Phaser.Scene {
 
         const monster = new Enemy(this, position);
         this.enemies.push(monster);
+    }
+
+    //sets up overlap collisions behaviors
+    create_collisions() {
+        this.physics.add.overlap(this.player,this.enemies,this.game_over,null,this);
+    }
+
+    game_over() {
+        this.cameras.main.flash();
+        this.scene.restart();
     }
 }
