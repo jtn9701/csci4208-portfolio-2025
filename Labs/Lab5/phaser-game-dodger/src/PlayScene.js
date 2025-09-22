@@ -23,11 +23,12 @@ class PlayScene extends Phaser.Scene {
     //Update game data
     update() {
         this.update_player();
+        this.update_background();
     }
 
     //load level
     create_map() {
-        this.add.image(640/2, 480/2, 'background');
+        this.background = this.add.tileSprite(640/2, 480/2, 640, 480, 'background');
     }
 
     //create player
@@ -69,4 +70,9 @@ class PlayScene extends Phaser.Scene {
         this.cameras.main.flash();
         this.scene.restart();
     }
+
+    update_background(){
+        this.background.tilePositionX += 3;
+    }
+
 }

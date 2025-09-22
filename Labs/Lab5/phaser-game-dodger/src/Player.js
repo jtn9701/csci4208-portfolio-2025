@@ -7,6 +7,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.setCollideWorldBounds(true); //don't go out of the map
+        this.body.setSize(this.width-16, this.height-16); // 16x16 for 32x32
+
         this.buttons = scene.input.keyboard.addKeys('up,down,left,right');
     }
 
