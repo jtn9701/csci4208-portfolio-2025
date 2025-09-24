@@ -10,6 +10,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.body.setSize(this.width-16, this.height-16); // 16x16 for 32x32
 
         this.buttons = scene.input.keyboard.addKeys('up,down,left,right');
+        this.anims.play('player-move',true); //tell anims manager to play move
     }
 
     //move player

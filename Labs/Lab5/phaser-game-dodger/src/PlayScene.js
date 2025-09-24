@@ -2,6 +2,8 @@ class PlayScene extends Phaser.Scene {
     //construct new scene
     constructor() {
         super('play'); //set this scene's id within superclass constructor
+        this.top_score = 100;
+        this.winner = 'Top Score';
     }
 
     //preload external game assets
@@ -10,20 +12,27 @@ class PlayScene extends Phaser.Scene {
         this.load.image( 'background', 'background.png' );  //Load tile images
         this.load.image( 'player', 'player.png' ); //Load player image
         this.load.image( 'enemy', 'enemy.png' ); //Load enemy image
+        this.load.image( 'player-0', 'player-0.png' ); //Load walk frame 0
+        this.load.image( 'player-1', 'player-1.png' ); //Load walk frame 1
+        this.load.image( 'enemy-0', 'enemy-0.png' ); //Load walk frame 0
+        this.load.image( 'enemy-1', 'enemy-1.png' ); //Load walk frame 1
     }
 
     //create game data
     create() {
         this.create_map();  // create level
+        this.create_animations(); //create animations
         this.create_player();
         this.create_enemies();
         this.create_collisions();
+        this.create_hud();
     }
     
     //Update game data
     update() {
         this.update_player();
         this.update_background();
+        this.update_score();
     }
 
     //load level
@@ -59,6 +68,8 @@ class PlayScene extends Phaser.Scene {
 
         const monster = new Enemy(this, position);
         this.enemies.push(monster);
+
+        this.score +=1;
     }
 
     //sets up overlap collisions behaviors
@@ -67,6 +78,12 @@ class PlayScene extends Phaser.Scene {
     }
 
     game_over() {
+        if ( this.score >= this.top_score) {
+            this.top_score = this.score;
+            this.physics.pause(); // freeze gameplay
+            this.winner = prompt("Winner! Enter you name: ") ?? "Top Score" // Use 'Top Score' if null
+            this.input.keyboard.keys = [] // reset phaser keys stream
+        }
         this.cameras.main.flash();
         this.scene.restart();
     }
@@ -75,4 +92,39 @@ class PlayScene extends Phaser.Scene {
         this.background.tilePositionX += 3;
     }
 
+    //create animations
+    create_animations(scene){
+        if ( !this.anims.exists('player-move') ){
+            const anim_player_move = new Object();
+            anim_player_move.key = 'player-move'; //key to register into phaser
+            anim_player_move.frames = [{key: 'player-0'}, {key: 'player-1'}]; //list of image keys for anim
+            anim_player_move.frameRate = 6; //speed to play animation
+            anim_player_move.repeat = -1; //-1 for infinite loop
+            this.anims.create(anim_player_move); //facotory creates anim obj
+        }
+        if ( !this.anims.exists('enemy-move') ){
+            const anim_enemy_move = new Object();
+            anim_enemy_move.key = 'enemy-move'; //key to register into phaser
+            anim_enemy_move.frames = [{key: 'enemy-0'}, {key: 'enemy-1'}]; //list of image keys for anim
+            anim_enemy_move.frameRate = 6; //speed to play animation
+            anim_enemy_move.repeat = -1; //-1 for infinite loop
+            this.anims.create(anim_enemy_move); //facotory creates anim obj
+        }
+    }
+
+    create_hud() {
+        this.score = 0;
+        this.score_text = this.add.text(32, 32, "");
+        this.score_text.depth = 3;
+        this.score_text.setColor( 'rgb(255,255,255)' );
+
+        this.top_score_text = this.add.text( 600, 32, "" ); //on a 640x480 size scene
+        this.top_score_text.depth = 3;
+        this.top_score_text.setOrigin(1,0);
+    }
+
+    update_score() {
+        this.score_text.setText("Score: " + this.score);
+        this.top_score_text.setText(`${this.winner}: ${this.top_score}` );
+    }
 }
