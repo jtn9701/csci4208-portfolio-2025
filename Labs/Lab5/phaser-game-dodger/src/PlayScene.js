@@ -35,6 +35,7 @@ class PlayScene extends Phaser.Scene {
         this.update_player(time);
         this.update_background();
         this.update_score();
+        this.update_enemies(time);
     }
 
     //load level
@@ -79,6 +80,7 @@ class PlayScene extends Phaser.Scene {
     create_collisions() {
         this.physics.add.overlap(this.player,this.enemies,this.game_over,null,this);
         this.physics.add.overlap(this.player_projectiles,this.enemies,this.slay_enemy,null,this);
+        this.physics.add.overlap(this.enemy_projectiles,this.player,this.game_over,null,this);
     }
 
     game_over() {
@@ -134,10 +136,15 @@ class PlayScene extends Phaser.Scene {
 
     create_projectiles(){
         this.player_projectiles = [];
+        this.enemy_projectiles = [];
     }
 
     slay_enemy(projectile, enemy) {
         enemy.destroy();
         projectile.destroy();
+    }
+
+    update_enemies(time){
+        this.enemies.forEach(enemy => enemy.attack(time));
     }
 }
