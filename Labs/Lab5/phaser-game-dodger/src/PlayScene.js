@@ -16,11 +16,13 @@ class PlayScene extends Phaser.Scene {
         this.load.image( 'player-1', 'player-1.png' ); //Load walk frame 1
         this.load.image( 'enemy-0', 'enemy-0.png' ); //Load walk frame 0
         this.load.image( 'enemy-1', 'enemy-1.png' ); //Load walk frame 1
+        this.load.image( 'projectile', 'projectile.png' ); //Load projectile image
     }
 
     //create game data
     create() {
         this.create_map();  // create level
+        this.create_projectiles(); //create projectiles
         this.create_animations(); //create animations
         this.create_player();
         this.create_enemies();
@@ -29,8 +31,8 @@ class PlayScene extends Phaser.Scene {
     }
     
     //Update game data
-    update() {
-        this.update_player();
+    update(time) {
+        this.update_player(time);
         this.update_background();
         this.update_score();
     }
@@ -46,8 +48,9 @@ class PlayScene extends Phaser.Scene {
     }
 
     //update game state
-    update_player() {
+    update_player(time) {
         this.player.move();
+        this.player.attack(time);
     }
 
     create_enemies() {
@@ -75,6 +78,7 @@ class PlayScene extends Phaser.Scene {
     //sets up overlap collisions behaviors
     create_collisions() {
         this.physics.add.overlap(this.player,this.enemies,this.game_over,null,this);
+        this.physics.add.overlap(this.player_projectiles,this.enemies,this.slay_enemy,null,this);
     }
 
     game_over() {
@@ -126,5 +130,14 @@ class PlayScene extends Phaser.Scene {
     update_score() {
         this.score_text.setText("Score: " + this.score);
         this.top_score_text.setText(`${this.winner}: ${this.top_score}` );
+    }
+
+    create_projectiles(){
+        this.player_projectiles = [];
+    }
+
+    slay_enemy(projectile, enemy) {
+        enemy.destroy();
+        projectile.destroy();
     }
 }
