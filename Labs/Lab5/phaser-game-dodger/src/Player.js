@@ -4,6 +4,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.depth = 2;
         this.speed = 200;
         this.projectiles = scene.player_projectiles;
+        this.projectileScale = 1;
         this.last_fired = 0;
 
         scene.add.existing(this);
@@ -41,6 +42,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             const position = {x:this.x, y:this.y};
             const velocity = {x:300, y:0};
             const projectile = new Projectile(this.scene, position, velocity);
+            // scale the sprite you see #POWERUP
+            projectile.setScale(this.projectileScale);
+            // make the physics hitbox match what you see (minimal + effective) #POWERUP
+            projectile.body.setSize(projectile.displayWidth, projectile.displayHeight, true);
             this.projectiles.push(projectile);
             this.last_fired = time;
         }

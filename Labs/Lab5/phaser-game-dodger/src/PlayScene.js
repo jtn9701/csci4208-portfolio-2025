@@ -17,6 +17,8 @@ class PlayScene extends Phaser.Scene {
         this.load.image( 'enemy-0', 'enemy-0.png' ); //Load walk frame 0
         this.load.image( 'enemy-1', 'enemy-1.png' ); //Load walk frame 1
         this.load.image( 'projectile', 'projectile.png' ); //Load projectile image
+        this.load.image( 'powerup-projectile', 'powerup-1.png' ); //Load projectile image
+        this.load.image( 'powerup-slay', 'powerup-2.png' ); //Load projectile image
     }
 
     //create game data
@@ -26,6 +28,7 @@ class PlayScene extends Phaser.Scene {
         this.create_animations(); //create animations
         this.create_player();
         this.create_enemies();
+        this.create_powerups();
         this.create_collisions();
         this.create_hud();
     }
@@ -81,6 +84,8 @@ class PlayScene extends Phaser.Scene {
         this.physics.add.overlap(this.player,this.enemies,this.game_over,null,this);
         this.physics.add.overlap(this.player_projectiles,this.enemies,this.slay_enemy,null,this);
         this.physics.add.overlap(this.enemy_projectiles,this.player,this.game_over,null,this);
+        this.physics.add.overlap(this.player, this.powerups_slay, this.get_powerup_slay, null, this);
+        this.physics.add.overlap(this.player, this.powerups_projectiles, this.get_powerup_projectile, null, this);
     }
 
     game_over() {
@@ -146,5 +151,47 @@ class PlayScene extends Phaser.Scene {
 
     update_enemies(time){
         this.enemies.forEach(enemy => enemy.attack(time));
+    }
+
+    create_powerups() {
+        this.powerups_projectiles = [];
+        this.powerups_slay = [];
+        var event = new Object();
+        event.delay = 3000;
+        event.callback = this.spawn_powerup;
+        event.callbackScope = this;
+        event.loop = true;
+        this.time.addEvent(event, this);
+    }
+
+    spawn_powerup() {
+        if ( Phaser.Math.Between(0,4) === 0 ) {
+            const config = new Object();
+            config.y = Phaser.Math.Between(0, 480);
+            config.x = 640+32;
+            config.type = 'powerup-projectile';
+            const potion = new PowerUp(this, config);
+            this.powerups_projectiles.push(potion);
+        }
+        else if (Phaser.Math.Between(0,4) === 0 ) {
+            const config = new Object();
+            config.y = Phaser.Math.Between(0, 480);
+            config.x = 640+32;
+            config.type = 'powerup-slay';
+            const potion = new PowerUp(this, config);
+            this.powerups_slay.push(potion);
+        }
+    }
+
+    get_powerup_slay(player, powerup){
+        this.enemies.forEach( monster => monster.destroy() );
+        this.enemy_projectiles.forEach( bullet => bullet.destroy());
+        powerup.destroy();
+        this.cameras.main.flash();
+    }
+
+    get_powerup_projectile(player, powerup){
+        this.player.projectileScale = Math.min(this.player.projectileScale + 1, 3);
+        powerup.destroy();
     }
 }
