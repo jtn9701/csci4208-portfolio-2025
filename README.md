@@ -8,6 +8,7 @@
     - [Lab2](./Labs/Lab2/css-crash-course-master/css-crash-course-master/)
     - [Lab3](./Labs/Lab3/portfolio-bootstrap-master/)
     - [Lab 4](./Labs/Lab4/hilo-js-dom-master/)
+    - [Lab 5](./Labs/Lab5/phaser-game-dodger/)
 - Projects:
     - [Interactive-story](./projects/project1-interactive-story/README.md)
 - Capstone:
