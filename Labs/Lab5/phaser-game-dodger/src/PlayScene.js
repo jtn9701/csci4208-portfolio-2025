@@ -2,8 +2,6 @@ class PlayScene extends Phaser.Scene {
     //construct new scene
     constructor() {
         super('play'); //set this scene's id within superclass constructor
-        this.top_score = 100;
-        this.winner = 'Top Score';
     }
 
     //preload external game assets
@@ -31,6 +29,7 @@ class PlayScene extends Phaser.Scene {
         this.create_powerups();
         this.create_collisions();
         this.create_hud();
+        this.input.keyboard.on('keydown-ESC', () => { this.scene.start('title'); });
     }
     
     //Update game data
@@ -89,10 +88,12 @@ class PlayScene extends Phaser.Scene {
     }
 
     game_over() {
-        if ( this.score >= this.top_score) {
-            this.top_score = this.score;
+        const {top_score, winner} = this.registry.values;
+        if ( this.score >= top_score) {
+            this.registry.set('top_score', this.score);
             this.physics.pause(); // freeze gameplay
-            this.winner = prompt("Winner! Enter you name: ") ?? "Top Score" // Use 'Top Score' if null
+            const winner = prompt(`New High Score! Enter your name:`);
+            this.registry.set('winner', winner || 'Top Score');
             this.input.keyboard.keys = [] // reset phaser keys stream
         }
         this.cameras.main.flash();
@@ -129,14 +130,18 @@ class PlayScene extends Phaser.Scene {
         this.score_text.depth = 3;
         this.score_text.setColor( 'rgb(255,255,255)' );
 
-        this.top_score_text = this.add.text( 600, 32, "" ); //on a 640x480 size scene
+        // Initialize persistent state by reading from the registry
+        const {winner, top_score} = this.registry.values;
+        this.top_score_text = this.add.text( 600, 32, `${winner}: ${top_score}` );
+         //on a 640x480 size scene
         this.top_score_text.depth = 3;
         this.top_score_text.setOrigin(1,0);
     }
 
     update_score() {
-        this.score_text.setText("Score: " + this.score);
-        this.top_score_text.setText(`${this.winner}: ${this.top_score}` );
+        this.score_text.setText(`Score: ${this.score}`);
+        const {winner, top_score} = this.registry.values;
+        this.top_score_text.setText(`${winner}: ${top_score}`);
     }
 
     create_projectiles(){

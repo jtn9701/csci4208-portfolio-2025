@@ -6,4 +6,9 @@ class PowerUp extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
         this.body.velocity.x = -300;
     }
+
+    // This is the key: a placeholder method for subclasses to override.
+    applyEffect(player) {
+        console.warn('applyEffect not implemented for this power-up type.');
+    }
 }
