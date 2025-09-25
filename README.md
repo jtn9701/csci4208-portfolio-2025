@@ -24,6 +24,7 @@
 │  ├─ lab2/</br>
 │  ├─ lab3/</br>
 │  └─ lab4/</br>
+│  └─ lab5/</br>
 ├─ projects/</br>
 │  └─ project1-interactive-story/</br>
 ├─ capstone/</br>
