@@ -9,6 +9,7 @@
     - [Lab3](./Labs/Lab3/portfolio-bootstrap-master/)
     - [Lab 4](./Labs/Lab4/hilo-js-dom-master/)
     - [Lab 5](./Labs/Lab5/phaser-game-dodger/)
+    - [Lab 6](./Labs/Lab6/quiz-game-master/)
 - Projects:
     - [Interactive-story](./projects/project1-interactive-story/README.md)
 - Capstone:
@@ -25,6 +26,7 @@
 │  ├─ lab3/</br>
 │  └─ lab4/</br>
 │  └─ lab5/</br>
+│  └─ lab6/</br>
 ├─ projects/</br>
 │  └─ project1-interactive-story/</br>
 ├─ capstone/</br>
