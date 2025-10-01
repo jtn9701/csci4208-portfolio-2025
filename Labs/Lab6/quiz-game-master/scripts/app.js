@@ -2,11 +2,14 @@ import * as http from './http.js' //Import http functions
 import * as view from './view.js'; //Import view functions
 
 const GET_TRIVIA = `https://opentdb.com/api.php?amount=1&difficulty=easy`; //Trivia GET endpoint
+const BIN_ID = '68ddb03cae596e708f02ec93'; //replace with your own
+const GET_LEADERBOARD = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
 const state = {
     score: 0,
     timer: 20,
     intervalId: null,
-    trivia: null
+    trivia: null,
+    topScores: []
 }; //Game start
 
 window.playGame = async () => { //PLAY function
@@ -16,6 +19,9 @@ window.playGame = async () => { //PLAY function
 }
 
 window.start = async () => { //START function
+    const leaderboardJSON = await http.sendGETRequest(GET_LEADERBOARD); //Fetch LeaderBoard
+    state.topScores = leaderboardJSON.record; //data in record prop
+    console.log(state.topScores); //Print LeaderBoard
     state.score = 0; //reset score
     state.timer = 20; //reset timer
     view.StartMenu(state); //render Start Menu 
