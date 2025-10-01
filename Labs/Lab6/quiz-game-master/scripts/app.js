@@ -4,6 +4,7 @@ import * as view from './view.js'; //Import view functions
 const GET_TRIVIA = `https://opentdb.com/api.php?amount=1&difficulty=easy`; //Trivia GET endpoint
 const BIN_ID = '68ddb03cae596e708f02ec93'; //replace with your own
 const GET_LEADERBOARD = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
+const PUT_LEADERBOARD = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 const state = {
     score: 0,
     timer: 20,
