@@ -21,3 +21,12 @@ export const GameoverScene = (props) => { //Function for HTML view
         <button onclick='start()'>Start Menu</button>`
     )
 }
+
+export const StartMenu = (props) => {
+    const {timer, score, trivia} = props;
+    renderDOM(
+        `${HUD(timer,score)}
+        <hr>
+        <button onclick='createGame()'>Play</button>`
+    )
+}

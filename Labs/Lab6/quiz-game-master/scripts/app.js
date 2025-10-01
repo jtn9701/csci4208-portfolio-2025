@@ -16,7 +16,9 @@ window.playGame = async () => { //PLAY function
 }
 
 window.start = async () => { //START function
-    createGame(); 
+    state.score = 0; //reset score
+    state.timer = 20; //reset timer
+    view.StartMenu(state); //render Start Menu 
 }
 
 window.addEventListener('load', start); 
@@ -31,8 +33,20 @@ const countdown = () => { //COUNTDOWN function
     }
 }
 
-const createGame = () => { //CREATE function
-    state.timer = 20; //set timer
+window.createGame = () => { //CREATE function
     state.intervalId = setInterval(countdown, 1000); //set interval id
     playGame(); //call PLAY function
+}
+
+window.checkAnswer = (attempt) => { //CHECK_ANSWER function
+    const answer = state.trivia.correct_answer; //Dereference answer
+    if (attempt == answer){ //When Attempt is correct
+        state.score += state.timer; //Add to Score based on time
+        state.timer += 10; //Add 10 bonus seconds
+        playGame(); //Play Next Round of Trivia
+    }
+    else { //When Attempt is incorrect
+        clearInterval( state.intervalId ); //stop countdown interval
+        view.GameoverScene(state); //show gameover view
+    }
 }
