@@ -9,7 +9,7 @@ const state = {
     trivia: null
 }; //Game start
 
-const playGame = async () => { //PLAY function
+window.playGame = async () => { //PLAY function
     const json = await http.sendGETRequest(GET_TRIVIA); //GET Request for trivia data
     [ state.trivia ] = json.results; //Destructure trivia data from array
     view.PlayScene(state); //Pass trivia data to view
