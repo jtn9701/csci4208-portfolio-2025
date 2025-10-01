@@ -10,3 +10,12 @@ export const PlayScene = (props) => { //Function for HTML view
         ${Question(trivia)}`
     )
 }
+
+export const GameoverScene = (props) => { //Function for HTML view
+    const {timer, score, trivia} = props; //Destructure properties
+    renderDOM( //render the Gameover HTML to DOM
+        `${HUD(timer, score)}
+        <h1>Game Over!</h1>
+        <button onclick='start()'>Start Menu</button>`
+    )
+}

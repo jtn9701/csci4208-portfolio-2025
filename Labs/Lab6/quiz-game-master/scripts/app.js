@@ -25,6 +25,9 @@ const countdown = () => { //COUNTDOWN function
     if (state.timer){ //check if time remains
         state.timer--; //decrement timer
         view.PlayScene(state); //view render play scene
+    } else{ //when timer is 0
+        clearInterval( state.intervalId ); //stop countdown interval
+        view.GameoverScene(state); //show gameover view
     }
 }
 
