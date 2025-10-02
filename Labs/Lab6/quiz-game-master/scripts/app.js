@@ -57,3 +57,20 @@ window.checkAnswer = (attempt) => { //CHECK_ANSWER function
         view.GameoverScene(state); //show gameover view
     }
 }
+
+const getTop5 = async (newScore) => {
+    const leaderboardJSON = await http.sendGETRequest(GET_LEADERBOARD);
+    const top5 = leaderboardJSON.record;
+    top5.push( newScore );
+    top5.sort( (a,b) => b.score - a.score );
+    top5.pop();
+    return top5
+}
+
+window.updateLeaderboard = async () => {
+    const name = document.getElementById('name').value;
+    const currentScore = {name:name, score: state.score};
+    const top5 = await getTop5(currentScore);
+    await http.sendPUTRequest(PUT_LEADERBOARD, top5);
+    start();
+}
