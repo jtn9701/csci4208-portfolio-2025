@@ -19,6 +19,7 @@ class Level1 extends Phaser.Scene {
     create() {
         this.create_map(); // create level
         this.create_player(); //helper method: create player
+        this.create_gravity(); // create gravity
     }
     
     //Update game data
@@ -45,5 +46,10 @@ class Level1 extends Phaser.Scene {
     //update game state
     update_player() {
         this.player.move();
+    }
+
+    //setup gravity with physics
+        create_gravity() {
+        this.physics.world.gravity.y = 600;
     }
 }
