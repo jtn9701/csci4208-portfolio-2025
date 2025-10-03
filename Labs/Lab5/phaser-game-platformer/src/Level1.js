@@ -20,6 +20,7 @@ class Level1 extends Phaser.Scene {
         this.create_map(); // create level
         this.create_player(); //helper method: create player
         this.create_gravity(); // create gravity
+        this.create_camera(); // create camera
     }
     
     //Update game data
@@ -52,4 +53,12 @@ class Level1 extends Phaser.Scene {
         create_gravity() {
         this.physics.world.gravity.y = 600;
     }
+
+    //Setup camera to follow player
+    create_camera() {
+        this.cameras.main.startFollow(this.player);
+        this.cameras.main.setBounds(0,0,this.map.widthInPixels, this.map.heightInPixels);
+        this.cameras.main.setBackgroundColor('rgb(204, 207, 255)');
+    }
+
 }
