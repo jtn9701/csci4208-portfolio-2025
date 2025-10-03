@@ -8,7 +8,31 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setOrigin(0.5,1);
         this.depth = 1;
         this.speed = 200;
-        
+
         scene.add.existing(this);
+        scene.physics.add.existing(this);
+        this.arrow_keys = scene.input.keyboard.addKeys('up,left,right');
     }
+
+    //move player
+    move() {
+        //verify that player has a physics body to move (for multilevel)
+        if (this.body === undefined)
+            return;
+
+        // reset velocity
+        this.body.velocity.x = 0;
+        
+        // take care of character movement
+        if ( this.arrow_keys.up.isDown ) {
+            this.body.velocity.y = -this.speed * 2;
+        }
+        if ( this.arrow_keys.left.isDown ) {
+            this.body.velocity.x = -this.speed;
+        }
+        if ( this.arrow_keys.right.isDown ) {
+            this.body.velocity.x = this.speed;
+        }
+    }
+
 }

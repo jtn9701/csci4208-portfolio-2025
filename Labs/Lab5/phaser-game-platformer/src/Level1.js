@@ -19,10 +19,12 @@ class Level1 extends Phaser.Scene {
     create() {
         this.create_map(); // create level
         this.create_player(); //helper method: create player
-     }
+    }
     
     //Update game data
-    update() { }
+    update() {
+        this.update_player();
+    }
 
     //Load level
     create_map() {
@@ -40,4 +42,8 @@ class Level1 extends Phaser.Scene {
         this.player = new Player(this); //create player
     }
 
+    //update game state
+    update_player() {
+        this.player.move();
+    }
 }
