@@ -21,6 +21,7 @@ class Level1 extends Phaser.Scene {
         this.create_player(); //helper method: create player
         this.create_gravity(); // create gravity
         this.create_camera(); // create camera
+        this.create_colisions(); // create collisions
     }
     
     //Update game data
@@ -37,6 +38,10 @@ class Level1 extends Phaser.Scene {
 
         // Arguments: 1:<Tiled layer name or index>, 2:Tileset, 3:<x offset px>, 4:<y offset px>
         this.groundLayer = this.map.createLayer('tiles', groundTiles, 0, 0);
+
+        //collisions based on tile type in custom properties
+        const ground_block = { terrain: 'block'};
+        this.groundLayer.setCollisionByProperty( ground_block );
     }
 
     //Create Game World
@@ -61,4 +66,8 @@ class Level1 extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('rgb(204, 207, 255)');
     }
 
+    //setups collisions with physics
+    create_colisions(){
+        this.physics.add.collider( this.player, this.groundLayer );
+    }
 }
