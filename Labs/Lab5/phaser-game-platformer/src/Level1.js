@@ -20,6 +20,7 @@ class Level1 extends Phaser.Scene {
     create() {
         this.create_map(); // create level
         this.create_player(); //helper method: create player
+        this.create_hazards(); // create hazards
         this.create_goal(); // create goal
         this.create_gravity(); // create gravity
         this.create_camera(); // create camera
@@ -73,11 +74,16 @@ class Level1 extends Phaser.Scene {
     create_colisions(){
         this.physics.add.collider( this.player, this.groundLayer );
         this.physics.add.overlap(this.player,this.goal,this.next_scene,null,this);
+        this.physics.add.overlap(this.player,this.group_hazard1,this.game_over,null,this);
+        this.physics.add.overlap(this.player,this.group_hazard2,this.game_over,null,this);
     }
 
     //check player lose conditions
-    game_over() {
+    game_over(player=null, hazard=null){
         if (this.player.y > this.map.heightInPixels) { //check if player is lower than level
+            this.scene.restart();
+        }
+        if (hazard !== null) { //check if player is touching hazard
             this.scene.restart();
         }
     }
@@ -100,6 +106,17 @@ class Level1 extends Phaser.Scene {
     //start the next level
     next_scene(player,goal) {
         this.scene.start('Level2');
+    }
+
+    //Create hazard items from object layer
+    create_hazards(){
+        const hazard1_image = { name: 'hazard1', key: 'items', frame: 2 };
+        this.group_hazard1 = this.map.createFromObjects('items', hazard1_image);
+        this.setup_objects(this.group_hazard1);
+
+        const hazard2_image = { name: 'hazard2', key: 'items', frame: 1 };
+        this.group_hazard2 = this.map.createFromObjects('items', hazard2_image);
+        this.setup_objects(this.group_hazard2);
     }
 
 }
