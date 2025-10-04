@@ -27,6 +27,7 @@ class Level1 extends Phaser.Scene {
     //Update game data
     update() {
         this.update_player();
+        this.game_over();
     }
 
     //Load level
@@ -69,5 +70,12 @@ class Level1 extends Phaser.Scene {
     //setups collisions with physics
     create_colisions(){
         this.physics.add.collider( this.player, this.groundLayer );
+    }
+
+    //check player lose conditions
+    game_over() {
+        if (this.player.y > this.map.heightInPixels) { //check if player is lower than level
+            this.scene.restart();
+        }
     }
 }
