@@ -33,6 +33,7 @@ class Level1 extends Phaser.Scene {
         this.create_colisions(); // create collisions
         this.physics.add.collider( this.group_enemies, this.groundLayer );
         this.physics.add.collider( this.player,this.group_enemies, this.game_over, null, this );
+        this.input.keyboard.on('keydown-ESC', () => { this.scene.start('title'); });
     }
     
     //Update game data
