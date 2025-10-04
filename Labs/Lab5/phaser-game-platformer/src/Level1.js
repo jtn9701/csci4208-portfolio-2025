@@ -20,6 +20,7 @@ class Level1 extends Phaser.Scene {
     create() {
         this.create_map(); // create level
         this.create_player(); //helper method: create player
+        this.create_collectables(); // create collectables
         this.create_hazards(); // create hazards
         this.create_falling_tiles(); // create falling tile hazards
         this.create_goal(); // create goal
@@ -78,6 +79,7 @@ class Level1 extends Phaser.Scene {
         this.physics.add.overlap(this.player,this.group_hazard1,this.game_over,null,this);
         this.physics.add.overlap(this.player,this.group_hazard2,this.game_over,null,this);
         this.physics.add.collider(this.player,this.group_fall,this.add_gravity,null,this);
+        this.physics.add.overlap( this.player, this.group_collect, this.take_collectable, null, this );
     }
 
     //check player lose conditions
@@ -132,6 +134,18 @@ class Level1 extends Phaser.Scene {
     add_gravity(player, hazard){
         hazard.body.gravity.y = -1;
         hazard.body.allowGravity = true;
+    }
+
+    //Create items from object layer
+    create_collectables(){
+        const collect_data = { name: 'collect', key: 'items', frame: 0 };
+        this.group_collect = this.map.createFromObjects('items', collect_data);
+        this.setup_objects(this.group_collect);
+    }
+
+    //pick up coins - scoring logic would go in this method too
+    take_collectable( player, collect ) {
+        collect.destroy();
     }
 
 }
