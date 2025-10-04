@@ -24,7 +24,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.body.velocity.x = 0;
 
         // take care of character movement
-        if ( this.arrow_keys.up.isDown && this.body.blocked.down) {
+        if ( this.arrow_keys.up.isDown && ( this.body.onFloor() || this.body.blocked.down ) ) {
             this.body.velocity.y = -this.speed * 2;
         }
         if ( this.arrow_keys.left.isDown ) {

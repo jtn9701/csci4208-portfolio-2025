@@ -21,6 +21,7 @@ class Level1 extends Phaser.Scene {
         this.create_map(); // create level
         this.create_player(); //helper method: create player
         this.create_hazards(); // create hazards
+        this.create_falling_tiles(); // create falling tile hazards
         this.create_goal(); // create goal
         this.create_gravity(); // create gravity
         this.create_camera(); // create camera
@@ -76,6 +77,7 @@ class Level1 extends Phaser.Scene {
         this.physics.add.overlap(this.player,this.goal,this.next_scene,null,this);
         this.physics.add.overlap(this.player,this.group_hazard1,this.game_over,null,this);
         this.physics.add.overlap(this.player,this.group_hazard2,this.game_over,null,this);
+        this.physics.add.collider(this.player,this.group_fall,this.add_gravity,null,this);
     }
 
     //check player lose conditions
@@ -117,6 +119,19 @@ class Level1 extends Phaser.Scene {
         const hazard2_image = { name: 'hazard2', key: 'items', frame: 1 };
         this.group_hazard2 = this.map.createFromObjects('items', hazard2_image);
         this.setup_objects(this.group_hazard2);
+    }
+
+    //Create falling tile items from object layer
+    create_falling_tiles() {
+        const fall_image = {name:'fall', key:'tiles', frame: 3 };
+        this.group_fall = this.map.createFromObjects( 'items', fall_image);
+        this.setup_objects(this.group_fall);
+    }
+
+    //check player lose conditions
+    add_gravity(player, hazard){
+        hazard.body.gravity.y = -1;
+        hazard.body.allowGravity = true;
     }
 
 }
