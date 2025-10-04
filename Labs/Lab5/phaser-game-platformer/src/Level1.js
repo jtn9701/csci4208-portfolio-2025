@@ -13,12 +13,14 @@ class Level1 extends Phaser.Scene {
         const tile_size = {frameWidth: 32, frameHeight: 32}
         this.load.spritesheet('tiles', 'tiles.png', tile_size); //Load tile spritesheet
         this.load.spritesheet('items', 'items.png', tile_size); //Load items spritesheet
-        this.load.image( 'player', 'player.png'); //load player image
+        const player_size = {frameWidth: 64, frameHeight: 64} //player size props
+        this.load.spritesheet( 'player-walk', 'player-walk.png', player_size ); //load player spritesheet
     }
 
     //create game data
     create() {
         this.create_map(); // create level
+        this.create_animations(); //create animations
         this.create_player(); //helper method: create player
         this.create_collectables(); // create collectables
         this.create_hazards(); // create hazards
@@ -148,4 +150,21 @@ class Level1 extends Phaser.Scene {
         collect.destroy();
     }
 
+    //create animations
+    create_animations(){
+        if ( !this.anims.exists('player-left') ){
+            const left_animation = new Object();
+            left_animation.key = 'player-left';
+            left_animation.frames = this.anims.generateFrameNumbers('player-walk', {start:2, end:3});
+            left_animation.frameRate = 6;
+            this.anims.create(left_animation);
+        }
+        if ( !this.anims.exists('player-right') ){
+            const right_animation = new Object();
+            right_animation.key = 'player-right';
+            right_animation.frames = this.anims.generateFrameNumbers('player-walk', {start:0, end:1});
+            right_animation.frameRate = 6;
+            this.anims.create(right_animation);
+        }
+    }
 }

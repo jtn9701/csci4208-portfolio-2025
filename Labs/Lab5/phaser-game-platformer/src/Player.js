@@ -1,6 +1,6 @@
 class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene) {
-        super(scene, 0, 0, 'player');
+        super(scene, 0, 0, 'player-walk', 0);
 
         const start = scene.map.findObject('items', obj => obj.name === 'player' );
         this.x = start.x;
@@ -12,6 +12,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.arrow_keys = scene.input.keyboard.addKeys('up,left,right');
+        this.play('player-right',false);
     }
 
     //move player
@@ -29,9 +30,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
         if ( this.arrow_keys.left.isDown ) {
             this.body.velocity.x = -this.speed;
+            this.play('player-left',true); //play animation
         }
         if ( this.arrow_keys.right.isDown ) {
             this.body.velocity.x = this.speed;
+            this.play('player-right',true); //play animation
         }
     }
 
