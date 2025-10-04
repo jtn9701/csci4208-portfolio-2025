@@ -20,6 +20,7 @@ class Level1 extends Phaser.Scene {
     create() {
         this.create_map(); // create level
         this.create_player(); //helper method: create player
+        this.create_goal(); // create goal
         this.create_gravity(); // create gravity
         this.create_camera(); // create camera
         this.create_colisions(); // create collisions
@@ -71,6 +72,7 @@ class Level1 extends Phaser.Scene {
     //setups collisions with physics
     create_colisions(){
         this.physics.add.collider( this.player, this.groundLayer );
+        this.physics.add.overlap(this.player,this.goal,this.next_scene,null,this);
     }
 
     //check player lose conditions
@@ -86,6 +88,18 @@ class Level1 extends Phaser.Scene {
             obj.body.immovable = true;
             obj.body.allowGravity = false;
         }
+    }
+
+    //Create items from object layer
+    create_goal(){
+        const goal_image = { name: 'goal', key: 'items', frame: 3 };
+        this.goal = this.map.createFromObjects('items', goal_image);
+        this.setup_objects(this.goal);
+    }
+
+    //start the next level
+    next_scene(player,goal) {
+        this.scene.start('Level2');
     }
 
 }
