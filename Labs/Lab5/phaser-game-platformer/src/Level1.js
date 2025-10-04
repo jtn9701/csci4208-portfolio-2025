@@ -12,6 +12,7 @@ class Level1 extends Phaser.Scene {
         this.load.tilemapTiledJSON( this.map_key, this.map_json); //Load JSON file
         const tile_size = {frameWidth: 32, frameHeight: 32}
         this.load.spritesheet('tiles', 'tiles.png', tile_size); //Load tile spritesheet
+        this.load.spritesheet('items', 'items.png', tile_size); //Load items spritesheet
         this.load.image( 'player', 'player.png'); //load player image
     }
 
@@ -78,4 +79,13 @@ class Level1 extends Phaser.Scene {
             this.scene.restart();
         }
     }
+
+    setup_objects(objGroup){
+        for(let obj of objGroup) {
+            this.physics.add.existing(obj);
+            obj.body.immovable = true;
+            obj.body.allowGravity = false;
+        }
+    }
+
 }
