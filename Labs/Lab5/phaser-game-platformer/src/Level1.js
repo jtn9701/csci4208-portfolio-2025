@@ -15,6 +15,7 @@ class Level1 extends Phaser.Scene {
         this.load.spritesheet('items', 'items.png', tile_size); //Load items spritesheet
         const player_size = {frameWidth: 64, frameHeight: 64} //player size props
         this.load.spritesheet( 'player-walk', 'player-walk.png', player_size ); //load player spritesheet
+        this.load.image( 'enemy', 'enemy.png' ); //load enemy image
     }
 
     //create game data
@@ -22,6 +23,7 @@ class Level1 extends Phaser.Scene {
         this.create_map(); // create level
         this.create_animations(); //create animations
         this.create_player(); //helper method: create player
+        this.create_enemies(); // create enemies
         this.create_collectables(); // create collectables
         this.create_hazards(); // create hazards
         this.create_falling_tiles(); // create falling tile hazards
@@ -29,11 +31,14 @@ class Level1 extends Phaser.Scene {
         this.create_gravity(); // create gravity
         this.create_camera(); // create camera
         this.create_colisions(); // create collisions
+        this.physics.add.collider( this.group_enemies, this.groundLayer );
+        this.physics.add.collider( this.player,this.group_enemies, this.game_over, null, this );
     }
     
     //Update game data
     update() {
         this.update_player();
+        this.update_enemies();
         this.game_over();
     }
 
@@ -82,6 +87,7 @@ class Level1 extends Phaser.Scene {
         this.physics.add.overlap(this.player,this.group_hazard2,this.game_over,null,this);
         this.physics.add.collider(this.player,this.group_fall,this.add_gravity,null,this);
         this.physics.add.overlap( this.player, this.group_collect, this.take_collectable, null, this );
+        this.physics.add.collider( this.player,this.group_enemies, this.attack, null, this )
     }
 
     //check player lose conditions
@@ -167,4 +173,38 @@ class Level1 extends Phaser.Scene {
             this.anims.create(right_animation);
         }
     }
+
+    create_enemies() {
+        this.group_enemies = [];
+        let enemy_tiles = this.map.filterObjects('items', (obj) => obj.name==='enemy');
+        for (let tile of enemy_tiles) {
+            let enemy_config = {x: tile.x, y: tile.y};
+            let enemy = new Enemy(this, enemy_config );
+            this.group_enemies.push( enemy );
+        }
+    }
+
+    update_enemies() {
+        for (let enemy_idx in this.group_enemies){
+            this.respawn_enemy(enemy_idx);
+        }
+    }
+
+    respawn_enemy(enemy_idx) {
+        const enemy = this.group_enemies[enemy_idx];
+        if(enemy.y > this.map.heightInPixels) {
+            const new_enemy = new Enemy(this, enemy.start, enemy.speed)
+            this.group_enemies.splice(enemy_idx, 1); // remove old
+            this.group_enemies.push( new_enemy ); // add replacement
+        }
+    }
+
+    attack(player, enemy){
+        if (player.body.touching.down)
+            enemy.destroy()
+        else
+            this.game_over(player, enemy);
+    }
+
+
 }
