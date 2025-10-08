@@ -11,6 +11,7 @@
     - [Lab 5: Phaser Dodger Game](./Labs/Lab5/phaser-game-dodger/)
     - [Lab 5: Phaser Platformer Game](./Labs/Lab5/phaser-game-platformer/)
     - [Lab 6](./Labs/Lab6/quiz-game-master/)
+    - [Lab 7](./Labs/Lab7/browser-db/)
 - Projects:
     - [Interactive-story](./projects/project1-interactive-story/README.md)
 - Capstone:
@@ -30,6 +31,7 @@
 |     └─ Phaser Dodger Game</br>
 |     └─ Phaser Platformer Game</br>
 │  └─ lab6/</br>
+│  └─ lab7/</br>
 ├─ projects/</br>
 │  └─ project1-interactive-story/</br>
 ├─ capstone/</br>
