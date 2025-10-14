@@ -14,7 +14,7 @@
     - [Lab 7](./Labs/Lab7/browser-db/)
 - Projects:
     - [Interactive-story](./projects/project1-interactive-story/README.md)
-    - [Project 2](https://github.com/jtn9701/Platformer-Game/README.md)
+    - [Project 2](./projects/project2/README.md)
 - Capstone:
     - [Capstone](./capstone)
     - [Capstone Project Board](https://github.com/users/jtn9701/projects/2/views/1)
