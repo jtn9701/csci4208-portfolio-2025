@@ -17,7 +17,6 @@
     - [Project 2](./projects/project2/README.md)
 - Capstone:
     - [Capstone](./capstone)
-    - [Capstone Project Board](https://github.com/users/jtn9701/projects/2/views/1)
 
 ## Repo Layout
 /</br>
