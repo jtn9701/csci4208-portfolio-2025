@@ -4,7 +4,7 @@
 - Johnny Vu
 
 ## Idea Summary
-We are creating a jackbox-like game where people create memes and vote for the best one.
+We are creating a jackbox-like game where people vote for the best meme template.
 
 ## Code
 [Code](https://github.com/jtn9701/MemeLab-Battles)
